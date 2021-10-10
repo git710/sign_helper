@@ -1,3 +1,4 @@
+'use strict'
 const fetch = require('node-fetch')
 const sendMail = require('./sendMail')
 
@@ -56,12 +57,13 @@ const drawFn = async () => {
     method: 'POST',
     credentials: 'include'
   }).then(res => res.json())
-  console.log(`免费抽奖：${
-                draw.data
-                  ? draw.data.lottery_name
-                    ? draw.data.lottery_name 
-                    : draw.data 
-                  : draw
+  console.log(
+    `免费抽奖：${
+      draw.data
+        ? draw.data.lottery_name
+          ? draw.data.lottery_name
+          : draw.data
+        : draw
     }`
   )
 
@@ -117,7 +119,7 @@ const drawFn = async () => {
     method: 'POST',
     credentials: 'include'
   }).then(res => res.json())
-  console.log(`签到：${check_in.data ? check_in.data : check_in}`)
+  // console.log(`签到：${check_in.data ? check_in.data : check_in}`)
 
   if (check_in.err_no !== 0) {
     try {
