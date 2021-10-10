@@ -33,7 +33,6 @@ const drawFn = async () => {
     }
   ).then(res => res.json())
   console.log(
-    // `查询今日是否有免费抽奖机会：${JSON.stringify(today)}`
     `查询今日是否有免费抽奖机会：${
       today.data
         ? today.data.free_count != null
@@ -119,7 +118,7 @@ const drawFn = async () => {
     method: 'POST',
     credentials: 'include'
   }).then(res => res.json())
-  // console.log(`签到：${check_in.data ? check_in.data : check_in}`)
+  console.log(`签到：${JSON.stringify(check_in.data)}`)
 
   if (check_in.err_no !== 0) {
     try {
