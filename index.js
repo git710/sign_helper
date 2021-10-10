@@ -56,7 +56,14 @@ const drawFn = async () => {
     method: 'POST',
     credentials: 'include'
   }).then(res => res.json())
-  console.log(`免费抽奖：${draw.data ? draw.data : draw}`)
+  console.log(`免费抽奖：${
+                draw.data
+                  ? draw.data.lottery_name
+                    ? draw.data.lottery_name 
+                    : draw.data 
+                  : draw
+    }`
+  )
 
   if (draw.err_no !== 0) {
     return Promise.reject('已经签到！免费抽奖异常！')
