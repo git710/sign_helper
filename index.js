@@ -3,6 +3,9 @@ const fetch = require('node-fetch')
 const sendMail = require('./sendMail')
 
 const [cookie, user, pass, to] = process.argv.slice(2)
+console.log('user', user)
+console.log('pass', pass)
+console.log('to', to)
 process.env.user = user
 process.env.pass = pass
 let score = 0
@@ -90,7 +93,7 @@ const drawFn = async () => {
   ).then(res => res.json())
   console.log(`查询今日是否已经签到：${today_status.data}`)
 
-  // if (today_status.err_no !== 0) {
+  if (today_status.err_no !== 0) {
     try {
       sendMail({
         from: '掘金',
@@ -106,7 +109,7 @@ const drawFn = async () => {
     } finally {
       return Promise.reject('签到失败！')
     }
-  // }
+  }
 
   if (today_status.data) {
     return Promise.resolve('今日已经签到！')
