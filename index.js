@@ -90,7 +90,7 @@ const drawFn = async () => {
   ).then(res => res.json())
   console.log(`查询今日是否已经签到：${today_status.data}`)
 
-  if (today_status.err_no !== 0) {
+  // if (today_status.err_no !== 0) {
     try {
       sendMail({
         from: '掘金',
@@ -106,7 +106,7 @@ const drawFn = async () => {
     } finally {
       return Promise.reject('签到失败！')
     }
-  }
+  // }
 
   if (today_status.data) {
     return Promise.resolve('今日已经签到！')
