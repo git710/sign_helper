@@ -3,9 +3,6 @@ const fetch = require('node-fetch')
 const sendMail = require('./sendMail')
 
 const [cookie, user, pass, to] = process.argv.slice(2)
-console.log('user', user)
-console.log('pass', pass)
-console.log('to', to)
 process.env.user = user
 process.env.pass = pass
 let score = 0
