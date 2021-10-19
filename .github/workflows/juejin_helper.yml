@@ -10,15 +10,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  # build:
-    # runs-on: ubuntu-latest
-    # steps:
-      # - uses: actions/checkout@v2
-      # - uses: actions/setup-node@v1
-        # with:
-          # node-version: 12
-      # - run: npm ci
-
   send:
     runs-on: ubuntu-latest
     steps:
@@ -33,4 +24,4 @@ jobs:
           USER: ${{ secrets.USER }}
           PASS: ${{ secrets.PASS }}
           TO: ${{ secrets.TO }}
-        run: npm ci && node index.js "${COOKIE}" "${USER}" "${PASS}" "${TO}"
+        run: npm ci && npm run serve:juejin "${COOKIE}" "${USER}" "${PASS}" "${TO}"
