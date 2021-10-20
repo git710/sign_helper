@@ -157,4 +157,6 @@ const drawFn = async () => {
   })
   .catch(error => {
     console.error(`自动签到通知。执行结果：${error}当前积分${score}`)
+  }).finally(() => {
+    process.exit(1)
   })
