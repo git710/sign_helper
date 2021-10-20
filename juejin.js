@@ -2,7 +2,7 @@
 const fetch = require('node-fetch')
 const sendMail = require('./sendMail')
 
-const [cookie, user, pass, to] = process.argv.slice(2)
+const [juejin_cookie, user, pass, to] = process.argv.slice(2)
 process.env.user = user
 process.env.pass = pass
 let score = 0
@@ -11,7 +11,7 @@ const headers = {
   'accept-encoding': 'gzip, deflate, br',
   'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,zh-TW;q=0.7',
   'content-type': 'application/json',
-  cookie,
+  cookie: juejin_cookie,
   referer: 'https://juejin.cn/',
   accept: '*/*',
   'sec-ch-ua':
