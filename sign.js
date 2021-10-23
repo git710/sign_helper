@@ -37,7 +37,6 @@ const tieba_headers = {
 
 // 掘金抽奖
 const drawFn = async () => {
-  // 查询今日是否有免费抽奖机会
   const today = await fetch(
     'https://api.juejin.cn/growth_api/v1/lottery_config/get',
     {
@@ -47,7 +46,7 @@ const drawFn = async () => {
     }
   ).then(res => res.json())
   console.log(
-    `查询今日是否有免费抽奖机会：${today.data
+    `查询掘金今日是否有免费抽奖机会：${today.data
       ? today.data.free_count != null
         ? today.data.free_count
         : today.data
@@ -56,11 +55,11 @@ const drawFn = async () => {
   )
 
   if (today.err_no !== 0) {
-    return Promise.reject('已经签到！免费抽奖失败！')
+    return Promise.reject('掘金已经签到，免费抽奖失败！')
   }
 
   if (today.data.free_count === 0) {
-    return Promise.resolve('签到成功！今日已经免费抽奖！')
+    return Promise.resolve('掘金签到成功，今日已经免费抽奖！')
   }
 
   // 免费抽奖
@@ -70,7 +69,7 @@ const drawFn = async () => {
     credentials: 'include'
   }).then(res => res.json())
   console.log(
-    `免费抽奖：${draw.data
+    `掘金免费抽奖：${draw.data
       ? draw.data.lottery_name
         ? draw.data.lottery_name
         : draw.data
@@ -79,19 +78,18 @@ const drawFn = async () => {
   )
 
   if (draw.err_no !== 0) {
-    return Promise.reject('已经签到！免费抽奖异常！')
+    return Promise.reject('掘金已经签到，免费抽奖异常！')
   }
 
   if (draw.data.lottery_type === 1) {
     score += 66
   }
 
-  return Promise.resolve(`签到成功！恭喜抽到：${draw.data.lottery_name}`)
+  return Promise.resolve(`掘金签到成功，恭喜抽到：${draw.data.lottery_name}`)
 }
 
   // 掘金签到
   ; (async () => {
-    // 查询今日是否已经签到
     const today_status = await fetch(
       'https://api.juejin.cn/growth_api/v1/get_today_status',
       {
@@ -100,7 +98,7 @@ const drawFn = async () => {
         credentials: 'include'
       }
     ).then(res => res.json())
-    console.log(`查询今日是否已经签到：${today_status.data}`)
+    console.log(`查询掘金今日是否已经签到：${today_status.data}`)
 
     if (today_status.err_no !== 0) {
       try {
@@ -109,19 +107,19 @@ const drawFn = async () => {
           to,
           subject: '定时任务',
           html: `
-          <h1 style="text-align: center">自动签到通知</h1>
+          <h1 style="text-align: center">掘金自动签到通知</h1>
           <p style="text-indent: 2em">签到失败！</p><br/>
         `
         })
       } catch (error) {
         console.error(error)
       } finally {
-        return Promise.reject('签到失败！')
+        return Promise.reject('掘金签到失败！')
       }
     }
 
     if (today_status.data) {
-      return Promise.resolve('今日已经签到！')
+      return Promise.resolve('掘金今日已经签到！')
     }
 
     // 签到
@@ -130,7 +128,7 @@ const drawFn = async () => {
       method: 'POST',
       credentials: 'include'
     }).then(res => res.json())
-    console.log(`签到：${JSON.stringify(check_in.data)}`)
+    console.log(`掘金签到：${JSON.stringify(check_in.data)}`)
 
     if (check_in.err_no !== 0) {
       try {
@@ -139,18 +137,18 @@ const drawFn = async () => {
           to,
           subject: '定时任务',
           html: `
-          <h1 style="text-align: center">自动签到通知</h1>
+          <h1 style="text-align: center">掘金自动签到通知</h1>
           <p style="text-indent: 2em">签到异常！</p><br/>
         `
         })
       } catch (error) {
         console.error(error)
       } finally {
-        return Promise.reject('签到异常！')
+        return Promise.reject('掘金签到异常！')
       }
     }
 
-    return Promise.resolve(`签到成功！当前积分；${check_in.data.sum_point}`)
+    return Promise.resolve(`掘金签到成功，当前积分：${check_in.data.sum_point}`)
   })()
     .then(msg => {
       return fetch('https://api.juejin.cn/growth_api/v1/get_cur_point', {
@@ -160,15 +158,15 @@ const drawFn = async () => {
       }).then(res => res.json())
     })
     .then(res => {
-      console.log(`分数：${res.data ? res.data : res}`)
+      console.log(`掘金分数：${res.data ? res.data : res}`)
       score = res.data
       return drawFn()
     })
     .then(msg => {
-      console.log(`自动签到通知。签到结果：${msg}当前积分${score}`)
+      console.log(`掘金自动签到通知：${msg}当前积分${score}`)
     })
     .catch(error => {
-      console.error(`自动签到通知。执行结果：${error}当前积分${score}`)
+      console.error(`掘金自动签到通知：${error}当前积分${score}`)
     })
 
   // 贴吧签到
@@ -182,7 +180,7 @@ const drawFn = async () => {
       }
     ).then(res => res.json())
     if (check_in.error && check_in.error === 'success') {
-      console.log('签到成功')
+      console.log('贴吧签到成功')
     } else {
       try {
         sendMail({
@@ -190,16 +188,16 @@ const drawFn = async () => {
           to,
           subject: '定时任务',
           html: `
-            <h1 style="text-align: center">自动签到通知</h1>
+            <h1 style="text-align: center">贴吧自动签到通知</h1>
             <p style="text-indent: 2em">签到失败！</p><br/>
           `
         })
       } catch (error) {
         console.error(error)
       } finally {
-        // return Promise.reject('签到失败！')
-        console.log('签到失败', JSON.stringify(check_in))
+        // return Promise.reject('贴吧签到失败！')
+        console.log('贴吧签到失败', JSON.stringify(check_in))
       }
     }
-    return Promise.resolve(`签到${check_in}`)
+    return Promise.resolve(`贴吧签到${check_in}`)
   })()
