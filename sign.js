@@ -59,7 +59,7 @@ const drawFn = async () => {
   }
 
   if (today.data.free_count === 0) {
-    return Promise.resolve('掘金签到成功，今日已经免费抽奖！')
+    return Promise.resolve('签到成功，今日已经免费抽奖！')
   }
 
   // 免费抽奖
@@ -85,7 +85,7 @@ const drawFn = async () => {
     score += 66
   }
 
-  return Promise.resolve(`掘金签到成功，恭喜抽到：${draw.data.lottery_name}`)
+  return Promise.resolve(`签到成功，恭喜抽到：${draw.data.lottery_name}`)
 }
 
   // 掘金签到
@@ -148,7 +148,7 @@ const drawFn = async () => {
       }
     }
 
-    return Promise.resolve(`掘金签到成功，当前积分：${check_in.data.sum_point}`)
+    return Promise.resolve(`签到成功，当前积分：${check_in.data.sum_point}`)
   })()
     .then(msg => {
       return fetch('https://api.juejin.cn/growth_api/v1/get_cur_point', {
@@ -195,7 +195,6 @@ const drawFn = async () => {
       } catch (error) {
         console.error(error)
       } finally {
-        // return Promise.reject('贴吧签到失败！')
         console.log('贴吧签到失败', JSON.stringify(check_in))
       }
     }
