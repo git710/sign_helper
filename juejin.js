@@ -2,12 +2,12 @@
 const fetch = require('node-fetch')
 const sendMail = require('./sendMail')
 
-const [juejin_cookie, user, pass, to] = process.argv.slice(2)
+const [juejin_cookie, tieba_cookie,user, pass, to] = process.argv.slice(2)
 process.env.user = user
 process.env.pass = pass
 let score = 0
 
-const headers = {
+const juejin_headers = {
   'accept-encoding': 'gzip, deflate, br',
   'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,zh-TW;q=0.7',
   'content-type': 'application/json',
@@ -27,7 +27,7 @@ const drawFn = async () => {
   const today = await fetch(
     'https://api.juejin.cn/growth_api/v1/lottery_config/get',
     {
-      headers,
+      headers: juejin_headers,
       method: 'GET',
       credentials: 'include'
     }
@@ -52,7 +52,7 @@ const drawFn = async () => {
 
   // 免费抽奖
   const draw = await fetch('https://api.juejin.cn/growth_api/v1/lottery/draw', {
-    headers,
+    headers: juejin_headers,
     method: 'POST',
     credentials: 'include'
   }).then(res => res.json())
@@ -83,7 +83,7 @@ const drawFn = async () => {
   const today_status = await fetch(
     'https://api.juejin.cn/growth_api/v1/get_today_status',
     {
-      headers,
+      headers: juejin_headers,
       method: 'GET',
       credentials: 'include'
     }
@@ -114,7 +114,7 @@ const drawFn = async () => {
 
   // 签到
   const check_in = await fetch('https://api.juejin.cn/growth_api/v1/check_in', {
-    headers,
+    headers: juejin_headers,
     method: 'POST',
     credentials: 'include'
   }).then(res => res.json())
@@ -142,7 +142,7 @@ const drawFn = async () => {
 })()
   .then(msg => {
     return fetch('https://api.juejin.cn/growth_api/v1/get_cur_point', {
-      headers,
+      headers: juejin_headers,
       method: 'GET',
       credentials: 'include'
     }).then(res => res.json())
@@ -154,9 +154,7 @@ const drawFn = async () => {
   })
   .then(msg => {
     console.log(`自动签到通知。签到结果：${msg}当前积分${score}`)
-    process.exit(0)
   })
   .catch(error => {
     console.error(`自动签到通知。执行结果：${error}当前积分${score}`)
-    process.exit(1)
   })

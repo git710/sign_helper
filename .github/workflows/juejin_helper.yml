@@ -21,7 +21,8 @@ jobs:
       - name: Run Project
         env:
           JUEJIN_COOKIE: ${{ secrets.JUEJIN_COOKIE }}
+          TIEBA_COOKIE: ${{ secrets.TIEBA_COOKIE }}
           USER: ${{ secrets.USER }}
           PASS: ${{ secrets.PASS }}
           TO: ${{ secrets.TO }}
-        run: npm ci && npm run serve:juejin "${JUEJIN_COOKIE}" "${USER}" "${PASS}" "${TO}"
+        run: npm ci && npm run serve:juejin "${JUEJIN_COOKIE}" "${TIEBA_COOKIE}" "${USER}" "${PASS}" "${TO}"
