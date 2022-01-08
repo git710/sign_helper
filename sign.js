@@ -1,8 +1,8 @@
 'use strict'
 const fetch = require('node-fetch')
 const sendMail = require('./sendMail')
+const [juejin_cookie, user, pass, to] = process.argv.slice(2)
 
-const [juejin_cookie, tieba_cookie, user, pass, to] = process.argv.slice(2)
 process.env.user = user
 process.env.pass = pass
 let score = 0
@@ -13,20 +13,6 @@ const juejin_headers = {
   'content-type': 'application/json',
   cookie: juejin_cookie,
   referer: 'https://juejin.cn/',
-  accept: '*/*',
-  'sec-ch-ua':
-    '"Chromium";v="94", "Google Chrome";v="94", ";Not A Brand";v="99"',
-  'sec-ch-ua-mobile': '?0',
-  'user-agent':
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36'
-}
-
-const tieba_headers = {
-  'accept-encoding': 'gzip, deflate, br',
-  'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
-  // 'content-type': 'application/json',
-  cookie: tieba_cookie,
-  referer: 'https://tieba.baidu.com/',
   accept: '*/*',
   'sec-ch-ua':
     '"Chromium";v="94", "Google Chrome";v="94", ";Not A Brand";v="99"',
@@ -168,35 +154,3 @@ const drawFn = async () => {
     .catch(error => {
       console.error(`掘金自动签到通知：${error}当前积分${score}`)
     })
-
-  // 贴吧签到
-  ; (async () => {
-    const check_in = await fetch(
-      `https://tieba.baidu.com/tbmall/onekeySignin1?_=${new Date().getTime()}`,
-      {
-        headers: tieba_headers,
-        method: 'GET',
-        credentials: 'include'
-      }
-    ).then(res => res.json())
-    if (check_in.error && check_in.error === 'success') {
-      console.log('贴吧签到成功')
-    } else {
-      try {
-        sendMail({
-          from: '贴吧',
-          to,
-          subject: '定时任务',
-          html: `
-            <h1 style="text-align: center">贴吧自动签到通知</h1>
-            <p style="text-indent: 2em">签到失败！</p><br/>
-          `
-        })
-      } catch (error) {
-        console.error(error)
-      } finally {
-        console.log('贴吧签到失败', JSON.stringify(check_in))
-      }
-    }
-    return Promise.resolve(`贴吧签到${check_in}`)
-  })()
