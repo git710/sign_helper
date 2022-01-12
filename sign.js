@@ -40,7 +40,7 @@ const instance = axios.create({
           console.log('查询今日是否已免费抽奖失败')
         }
         if (free.data.free_count === 0) {
-          canDraw = false
+//           canDraw = false
           console.log('今日已免费抽奖')
         }
       })
