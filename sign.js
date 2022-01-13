@@ -28,39 +28,39 @@ const instance = axios.create({
   headers: juejin_headers
 })
 
-  // 掘金抽奖
-  ; (() => {
-    //     let canDraw = true // 是否可以抽奖
-    instance
-      .get('/lottery_config/get')
-      .then(res => {
-        console.log('第一个请求')
-        const free = res.data
-        if (free.err_no !== 0) {
-          console.log('查询今日是否已免费抽奖失败')
-        }
-        if (free.data.free_count === 0) {
-//           canDraw = false
-          console.log('今日已免费抽奖')
-        }
-      })
-    // .then(
-    // () => {
-    //         if (!canDraw) return
-    instance.post('/lottery/draw').then(res => {
-      console.log('第二个请求')
-      const draw = res.data
-      if (draw.err_no !== 0) {
-        console.log('免费抽奖失败')
-        return
+// 掘金抽奖
+const drawFn = () => {
+  //     let canDraw = true // 是否可以抽奖
+  instance
+    .get('/lottery_config/get')
+    .then(res => {
+      console.log('第一个请求')
+      const free = res.data
+      if (free.err_no !== 0) {
+        console.log('查询今日是否已免费抽奖失败')
       }
-      if (draw.data.lottery_name) {
-        console.log(`恭喜抽到：${draw.data.lottery_name}`)
+      if (free.data.free_count === 0) {
+        //           canDraw = false
+        console.log('今日已免费抽奖')
       }
     })
-    // }
-    // )
-  })()
+  // .then(
+  // () => {
+  //         if (!canDraw) return
+  instance.post('/lottery/draw').then(res => {
+    console.log('第二个请求')
+    const draw = res.data
+    if (draw.err_no !== 0) {
+      console.log('免费抽奖失败')
+      return
+    }
+    if (draw.data.lottery_name) {
+      console.log(`恭喜抽到：${draw.data.lottery_name}`)
+    }
+  })
+  // }
+  // )
+}
 
   // 掘金签到
   ; (() => {
@@ -107,6 +107,7 @@ const instance = axios.create({
         })
       })
       .then(() => {
+        drawFn()
         if (!canCheckIn) return
         instance.get('/get_cur_point').then(res => {
           console.log('第五个请求')
